@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BDProd.Data;
+using BDProd.Services;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("BDProdContextConnection") ?? throw new InvalidOperationException("Connection string 'BDProdContextConnection' not found.");
 
 builder.Services.AddDbContext<BDProdContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BDProdContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<BDProdContext>();
+builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PlainTextPasswordHasher<IdentityUser>>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
