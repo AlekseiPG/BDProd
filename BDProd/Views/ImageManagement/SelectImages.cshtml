@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Image>
+
+@foreach (var image in Model)
+{
+    <div>
+        <img src="@image.ImagePath" alt="@image.ImageName" width="100">
+        <!-- Добавьте поля для классификации и других значений -->
+        <input type="text" name="classification" placeholder="Classification" />
+    </div>
+}
+
+<!-- Добавьте форму для отправки классификации и других значений -->
