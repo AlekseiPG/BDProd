@@ -10,8 +10,6 @@ builder.Services.AddDbContext<BDProdContext>(options => options.UseSqlServer(con
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<BDProdContext>();
 builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PlainTextPasswordHasher<IdentityUser>>();
-builder.Services.AddScoped<IImageService, ImageService>();
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
