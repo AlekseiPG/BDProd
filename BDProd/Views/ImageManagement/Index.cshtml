@@ -1,9 +1,0 @@
-﻿@model IEnumerable<string>
-
-@foreach (var folder in Model)
-{
-    <form asp-controller="ImageManagement" asp-action="DisplayImages" method="post">
-        <input type="hidden" name="folderPath" value="@folder" />
-        <button type="submit">@folder</button>
-    </form>
-}
