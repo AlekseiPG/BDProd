@@ -1,0 +1,18 @@
+{
+  "name": "bdprod",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "copy:photoswipe": "copy node_modules\\photoswipe\\dist* wwwroot\\lib\\photoswipe\\",
+    "copy:fancytree": "copy node_modules\\jquery.fancytree\\dist* wwwroot\\lib\\fancytree\\"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fancytree": "^0.0.0",
+    "jquery.fancytree": "^2.38.3",
+    "photoswipe": "^5.4.3"
+  }
+}

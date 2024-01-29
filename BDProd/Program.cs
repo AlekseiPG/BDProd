@@ -39,10 +39,10 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider("C:\\Changes_C\\Projects\\TESTING"),
-    RequestPath = "/TestingImages"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider("C:\\Changes_C\\Projects\\TESTING"),
+//    RequestPath = "/TestingImages"
+//});
 
 app.Run();

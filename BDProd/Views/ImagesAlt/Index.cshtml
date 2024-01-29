@@ -1,0 +1,95 @@
+﻿<!-- Views/ImagesAlt/Index.cshtml -->
+@model List<FancyTreeNode>
+
+@section scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="~/lib/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css">
+    <script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"></script>
+
+    <script type="module">
+        import PhotoSwipeLightbox from '/lib/photoswipe/dist/photoswipe-lightbox.esm.js';
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#my-gallery',
+            children: 'a',
+            pswpModule: () => import('/lib/photoswipe/dist/photoswipe.esm.js')
+        });
+        lightbox.init();
+    </script>
+    <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css">
+
+    <script>
+        $(document).ready(function () {
+            // Инициализация FancyTree
+            $("#fancytree").fancytree({
+                source: @Html.Raw(Json.Serialize(Model)),
+                activate: function (event, data) {
+                    // Обработка выбора папки
+                    var folderName = data.node.title;
+                    var images = data.node.data && data.node.data.children;
+                    renderPhotoSwipe(images);
+                }
+            });
+
+            function renderPhotoSwipe(images) {
+                // Инициализация PhotoSwipe
+                var pswpElement = document.getElementById('photoswipe');
+                var items = images.map(function (img, index) {
+                    return {
+                        src: img.Path,
+                        w: 1200,
+                        h: 800,
+                        index: index
+                    };
+                });
+
+                var options = {
+                    index: 0,
+                    bgOpacity: 0.85,
+                    getThumbBoundsFn: function (index) {
+                        // Эта функция возвращает размеры миниатюры, чтобы правильно отображать анимацию
+                        var thumbnail = document.querySelector('#fancytree .fancytree-node[data-index="' + index + '"]');
+                        var rect = thumbnail.getBoundingClientRect();
+                        return { x: rect.left, y: rect.top, w: rect.width };
+                    }
+                };
+
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+                gallery.listen('afterChange', function () {
+                    // При изменении изображения, обновляем скрытое поле с выбранными изображениями
+                    var selectedImages = gallery.getSelectedItems().map(function (item) {
+                        return images[item.index];
+                    });
+
+                    document.getElementById('selectedImages').value = JSON.stringify(selectedImages);
+                });
+
+                gallery.init();
+            }
+
+            // Добавим обработчик для отправки формы с выбранными изображениями
+            $('#continueForm').submit(function () {
+                // Возможно, здесь вы захотите добавить дополнительные проверки
+                // перед отправкой формы, например, убедиться, что выбраны изображения.
+
+                return true;
+
+            });
+        });
+    </script>
+}
+
+
+<div style="display: flex;">
+    <!-- Левая часть - FancyTree -->
+    <div id="fancytree" style="flex: 1;"></div>
+
+    <!-- Правая часть - PhotoSwipe -->
+    <div id="photoswipe" style="flex: 2;"></div>
+</div>
+
+<form asp-controller="ImagesAlt" asp-action="Continue" method="post" id="continueForm">
+    <input type="hidden" name="selectedImages" id="selectedImages" />
+</form>
+

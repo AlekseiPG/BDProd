@@ -1,0 +1,58 @@
+﻿<!-- Views/Test/Index.cshtml -->
+@model List<FancyTreeNode>
+
+@section scripts {
+    <link rel="stylesheet" href="~/lib/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css">
+    <script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"></script>
+    <script src="~/lib/jquery.fancytree/dist/modules/jquery.fancytree.filter.js"></script>
+    <script type="module">
+        import PhotoSwipeLightbox from '/lib/photoswipe/dist/photoswipe-lightbox.esm.js';
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '#my-gallery',
+            children: 'a',
+            pswpModule: () => import('/lib/photoswipe/dist/photoswipe.esm.js')
+        });
+        lightbox.init();
+    </script>
+    <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css">
+    <script>
+        $(document).ready(function () {
+            $('#fancytree').fancytree({
+                source: @Html.Raw(Json.Serialize(Model)),
+                extensions: ['filter'],
+                filter: {
+                    mode: 'hide'
+                },
+                activate: function (event, data) {
+                    var selectedFolder = data.node.data.path;
+                    $.ajax({
+                        url: '/Test/GetImages',
+                        type: 'GET',
+                        data: { folderPath: selectedFolder },
+                        success: function (data) {
+                            $('#imageGallery').empty();
+                            data.forEach(function (image) {
+                                $('#imageGallery').append('<img src="' + image.path + '" style="max-width: 25%; padding: 10px;" />');
+                            });
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Erreur de chargement des images:', errorThrown);
+                        }
+                    });
+                }
+            });
+            $('#treeSearch').on('input', function () {
+                var searchString = $(this).val();
+                var tree = $.ui.fancytree.getTree("#fancytree");;
+                tree.filterNodes(searchString);
+            });
+        });
+    </script>
+}
+
+<div style="display: flex;">
+    <div id="fancytree" style="flex: 1;">
+        <input type="text" id="treeSearch" placeholder="Recherche...">
+    </div>
+    <div id="imageGallery" style="flex: 2;"></div>
+</div>
