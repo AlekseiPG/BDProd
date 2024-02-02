@@ -1,0 +1,21 @@
+﻿<!-- Views/ImageForm/Index.cshtml -->
+@model string
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <script>
+            var selectedImages = JSON.parse('@Html.Raw(Model.Replace("\"", "\\\""))');
+            for (var i = 0; i < selectedImages.length; i++) {
+                document.write('<div class="carousel-item' + (i === 0 ? ' active' : '') + '"><img src="' + selectedImages[i] + '" class="d-block w-100" alt="Image"></div>');
+            }
+        </script>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>

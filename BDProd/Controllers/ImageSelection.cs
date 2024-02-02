@@ -1,23 +1,28 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using BDProd.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace BDProd.Controllers
 {
-    public class TestController : Controller
+    public class ImageSelection : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TestController(IWebHostEnvironment webHostEnvironment)
+        public ImageSelection(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
         }
 
+        private const string OverPath = "C:\\Changes_C\\Projects\\TESTING";
+
         public IActionResult Index()
         {
             var imageFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TESTING");
+            //var imageFolders = LoadImageFoldersFromServer(OverPath);
             var imageFolders = LoadImageFoldersFromServer(imageFolderPath);
             return View(imageFolders);
         }
@@ -33,6 +38,7 @@ namespace BDProd.Controllers
                 foreach (var subdirectory in subdirectories)
                 {
                     var relativePath = subdirectory.Substring(_webHostEnvironment.WebRootPath.Length).Replace('\\', '/');
+                    //var relativePath = subdirectory.Substring(OverPath.Length).Replace('\\', '/');
                     var folderNode = new FancyTreeNode
                     {
                         title = Path.GetFileName(subdirectory),
@@ -41,21 +47,6 @@ namespace BDProd.Controllers
                         path = relativePath, 
                         key = relativePath 
                     };
-
-                    var imageFiles = Directory.GetFiles(subdirectory)
-                        .Where(filePath => filePath.EndsWith(".jpg") || filePath.EndsWith(".png"));
-
-                    foreach (var imageFile in imageFiles)
-                    {
-                        var imagePath = imageFile.Substring(_webHostEnvironment.WebRootPath.Length).Replace('\\', '/');
-                        folderNode.children.Add(new FancyTreeNode
-                        {
-                            title = Path.GetFileNameWithoutExtension(imageFile),
-                            path = "/TESTING" + imagePath,
-                            key = "/TESTING" + imagePath
-                        });
-
-                    }
 
                     fancyTreeNodes.Add(folderNode);
                 }
@@ -72,6 +63,7 @@ namespace BDProd.Controllers
         public IActionResult GetImages(string folderPath)
         {
             var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, folderPath.TrimStart('/'));
+            //var fullPath = Path.Combine(OverPath, folderPath.TrimStart('/'));
             var images = new List<object>();
 
             if (Directory.Exists(fullPath))
@@ -79,10 +71,9 @@ namespace BDProd.Controllers
                 var imageFiles = Directory.GetFiles(fullPath)
                     .Where(filePath => filePath.EndsWith(".jpg") || filePath.EndsWith(".png"))
                     .Select(filePath => new { path = $"{folderPath}/{Path.GetFileName(filePath)}" });
-
+                Console.WriteLine(imageFiles);
                 images.AddRange(imageFiles);
             }
-
             return Json(images);
         }
 

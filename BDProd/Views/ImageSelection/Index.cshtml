@@ -1,11 +1,11 @@
-﻿<!-- Views/Test/Index.cshtml -->
+﻿<!-- Views/ImageSelection/Index.cshtml -->
 @model List<FancyTreeNode>
 
 @section scripts {
     <link rel="stylesheet" href="~/lib/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css">
     <script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"></script>
     <script src="~/lib/jquery.fancytree/dist/modules/jquery.fancytree.filter.js"></script>
-    <script type="module">
+        @*     <script type="module">
         import PhotoSwipeLightbox from '/lib/photoswipe/dist/photoswipe-lightbox.esm.js';
         const lightbox = new PhotoSwipeLightbox({
             gallery: '#my-gallery',
@@ -14,7 +14,8 @@
         });
         lightbox.init();
     </script>
-    <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css">
+    <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css"> *@
+    <link rel="stylesheet" href="~/css/selection_images.css">
     <script>
         $(document).ready(function () {
             $('#fancytree').fancytree({
@@ -26,13 +27,20 @@
                 activate: function (event, data) {
                     var selectedFolder = data.node.data.path;
                     $.ajax({
-                        url: '/Test/GetImages',
+                        url: '/ImageSelection/GetImages',
                         type: 'GET',
                         data: { folderPath: selectedFolder },
                         success: function (data) {
                             $('#imageGallery').empty();
                             data.forEach(function (image) {
-                                $('#imageGallery').append('<img src="' + image.path + '" style="max-width: 25%; padding: 10px;" />');
+                                var imageElement = $('<div class="imageContainer"></div>');
+                                var img = $('<img src="' + image.path + '" style="max-width: 100%;" />');
+                                var imageName = $('<p>' + getImageName(image.path) + '</p>');
+                                var checkbox = $('<input type="checkbox" name="selectedImages" value="' + image.path + '" />');
+                                imageElement.append(img);
+                                imageElement.append(checkbox);
+                                imageElement.append(imageName);
+                                $('#imageGallery').append(imageElement);
                             });
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -41,18 +49,34 @@
                     });
                 }
             });
+            function getImageName(path) {
+                return path.substring(path.lastIndexOf('/') + 1);
+            };
             $('#treeSearch').on('input', function () {
                 var searchString = $(this).val();
                 var tree = $.ui.fancytree.getTree("#fancytree");;
                 tree.filterNodes(searchString);
             });
+            $('#submitImages').click(function () {
+                var selectedImages = [];
+                $('input[name="selectedImages"]:checked').each(function () {
+                    selectedImages.push($(this).val());
+                });
+                var selectedImagesJson = JSON.stringify(selectedImages);
+                var encodedSelectedImages = encodeURIComponent(selectedImagesJson);
+                var url = '/ImageForm/Index?selectedImages=' + encodedSelectedImages;
+                window.location.href = url;
+            });
+
         });
     </script>
 }
 
 <div style="display: flex;">
-    <div id="fancytree" style="flex: 1;">
+    <div style="flex: 1; border-right">
         <input type="text" id="treeSearch" placeholder="Recherche...">
+        <div id="fancytree"></div>
+        <button id="submitImages">Continuer</button>
     </div>
-    <div id="imageGallery" style="flex: 2;"></div>
+    <div id="imageGallery" style="flex: 4;"></div>
 </div>

@@ -1,0 +1,32 @@
+﻿.container {
+    margin: 0;
+    max-width: 100%;
+    padding-left: 5vh;
+}
+
+#treeSearch {
+    border: none;
+}
+
+ul.fancytree-container {
+    border: none;
+}
+
+#imageGallery {
+    border-left: groove;
+    border-left-color: forestgreen;
+    border-left-width: 10px;
+    padding-left: 10vh;
+    padding-right: 10vh;
+
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start;
+}
+
+.imageContainer {
+    flex: 0 0 20%; 
+    padding: 10px;
+    box-sizing: border-box; 
+    text-align: center;
+}
