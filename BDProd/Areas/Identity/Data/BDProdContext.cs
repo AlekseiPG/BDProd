@@ -13,6 +13,8 @@ public class BDProdContext : IdentityDbContext<IdentityUser>
     }
 
     public DbSet<Image> Images { get; set; }
+    public DbSet<RefLabo> RefLabos { get; set; }
+    public DbSet<RefProd> RefProds { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

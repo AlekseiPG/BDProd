@@ -1,0 +1,76 @@
+﻿.container {
+    margin: auto;
+    max-width: 85%;
+}
+
+.my_block {
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 20px;
+}
+
+.my_flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.my_left_side {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 10vw;
+}
+
+.my_right_side {
+    text-align: right;
+    margin-left: auto;
+    margin-right: 10vw;
+}
+
+.my_carousel {
+    width: 30vw;
+    height: 40vh;
+    overflow: hidden;
+    text-align: center;
+}
+
+    .my_carousel img {
+        max-width: 100%;
+        max-height: 35vh;
+        object-fit: scale-down;
+    }
+
+.my_thumbnail_carousel {
+    width: 30vw;
+    text-align: center;
+}
+
+    .my_thumbnail_carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.pseudo_btn_wrap_in {
+    width: 150px;
+}
+
+.my_red {
+    background-color: darkred;
+}
+
+input {
+    width: 20vw;
+    margin: 5px;
+}
+
+#autocomplete-res-prod, #autocomplete-res-lab {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+}

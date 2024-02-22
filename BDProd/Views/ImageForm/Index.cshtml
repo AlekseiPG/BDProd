@@ -1,21 +1,120 @@
 ﻿<!-- Views/ImageForm/Index.cshtml -->
-@model string
+@model string[]
 
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <script>
-            var selectedImages = JSON.parse('@Html.Raw(Model.Replace("\"", "\\\""))');
-            for (var i = 0; i < selectedImages.length; i++) {
-                document.write('<div class="carousel-item' + (i === 0 ? ' active' : '') + '"><img src="' + selectedImages[i] + '" class="d-block w-100" alt="Image"></div>');
-            }
-        </script>
+@section scripts {
+    <script src="~/lib/splide/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="~/lib/splide/dist/css/splide.min.css">
+    <link rel="stylesheet" href="~/lib/splide/dist/css/themes/splide-sea-green.min.css">
+    <link rel="stylesheet" href="~/css/my_splide.css">
+    <script src="~/js/my_splide.js" defer></script>
+    @* <script src="~/js/my_search_web_prod.js"></script> *@
+    <script src="~/js/my_search_lab.js"></script>
+    <script src="~/js/my_search_prod.js"></script>
+}
+
+<div class="my_block my_flex">
+    <div>
+        <label for="labSearch">Laboratoire:</label>
+        <input type="text" id="autocomplete-lab" name="labSearch">
+        <div id="autocomplete-res-lab"></div>
+        <br>
+        <label for="productSearch">Code/Nom/Lpp:</label>
+        <input type="text" id="autocomplete-prod" name="productSearch">
+        <div id="autocomplete-res-prod"></div>
+        <span id="res-prod-count">x </span><label for="productSearch"> produits trouvés</label>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+</div>
+
+<div class="my_block my_flex">
+    <div class="my_left_side">
+        <span id="selected-code">Code: </span>
+        <br>
+        <span id="selected-nom">Nom: </span>
+        <p>Membre du Groupe de x produits / Creer groupe</p>
+    </div>
+    <div class="my_right_side">
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Enregistrer
+                </div>
+            </div>
+        </div>
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Annuler
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="my_block my_flex">
+    <div class="my_left_side">
+        <div id="main-carousel"
+             class="splide my_carousel">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    @foreach (var image in Model)
+                    {
+                        <li class="splide__slide">
+                            <img src="@Html.Raw(image)" alt="Image">
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div id="thumbnail-carousel"
+             class="splide my_thumbnail_carousel">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    @foreach (var image in Model)
+                    {
+                        <li class="splide__slide">
+                            <img src="@Html.Raw(image)" alt="Image">
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="my_right_side">
+        <p>
+            Créer: Nouveau
+        </p>
+        <p>
+            Operateur: ABCDEFG
+        </p>
+        <p id="tri-number">Tri: 1</p>
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Nouveau
+                </div>
+            </div>
+        </div>
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Supprimer
+                </div>
+            </div>
+        </div>
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Ajouter
+                </div>
+            </div>
+        </div>
+        <div class="pseudo_btn_wrap_out">
+            <div class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn my_red">
+                    Pubelle
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

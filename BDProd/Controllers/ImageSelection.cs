@@ -17,12 +17,14 @@ namespace BDProd.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        private const string OverPath = "C:\\Changes_C\\Projects\\TESTING";
+        //private const string OverPath = "C:\\Changes_C\\Projects\\TESTING";
 
         public IActionResult Index()
         {
-            var imageFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TESTING");
             //var imageFolders = LoadImageFoldersFromServer(OverPath);
+            var imageFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TESTING");
+            //var imageFolderPath = "C:\\Changes_C\\Projects\\TESTING";
+            Console.WriteLine(imageFolderPath);
             var imageFolders = LoadImageFoldersFromServer(imageFolderPath);
             return View(imageFolders);
         }

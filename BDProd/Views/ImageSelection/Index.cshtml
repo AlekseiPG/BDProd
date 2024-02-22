@@ -63,20 +63,23 @@
                     selectedImages.push($(this).val());
                 });
                 var selectedImagesJson = JSON.stringify(selectedImages);
-                var encodedSelectedImages = encodeURIComponent(selectedImagesJson);
-                var url = '/ImageForm/Index?selectedImages=' + encodedSelectedImages;
-                window.location.href = url;
+                window.location.href = '/ImageForm/Index?selectedImages=' + encodeURIComponent(selectedImagesJson);
             });
-
         });
     </script>
 }
 
 <div style="display: flex;">
-    <div style="flex: 1; border-right">
+    <div style="flex: 1; border-right;">
         <input type="text" id="treeSearch" placeholder="Recherche...">
         <div id="fancytree"></div>
-        <button id="submitImages">Continuer</button>
+        <div class="pseudo_btn_wrap_out">
+            <div id="submitImages" class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn">
+                    Continuer
+                </div>
+            </div>
+        </div>
     </div>
     <div id="imageGallery" style="flex: 4;"></div>
 </div>

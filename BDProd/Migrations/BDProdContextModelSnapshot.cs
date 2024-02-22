@@ -42,6 +42,9 @@ namespace BDProd.Migrations
                     b.Property<short>("NPO")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("RefProd")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("Supprime")
                         .HasColumnType("bit");
 
@@ -54,6 +57,108 @@ namespace BDProd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("BDProd.Models.RefLabo", b =>
+                {
+                    b.Property<int>("RLAB_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RLAB_ID"));
+
+                    b.Property<string>("RLAB_ADRESSE1")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("RLAB_ADRESSE2")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("RLAB_CPOSTAL")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<DateTime?>("RLAB_DELETED")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RLAB_FAX")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int?>("RLAB_ID_SRC")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RLAB_NOM")
+                        .IsRequired()
+                        .HasMaxLength(31)
+                        .HasColumnType("nvarchar(31)");
+
+                    b.Property<byte?>("RLAB_SRC")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("RLAB_TEL")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("RLAB_URL")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("RLAB_VILLE")
+                        .IsRequired()
+                        .HasMaxLength(39)
+                        .HasColumnType("nvarchar(39)");
+
+                    b.Property<string>("RLAB_codeWP")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.HasKey("RLAB_ID");
+
+                    b.ToTable("RefLabos");
+                });
+
+            modelBuilder.Entity("BDProd.Models.RefProd", b =>
+                {
+                    b.Property<int>("REF_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("REF_ID"));
+
+                    b.Property<string>("REF_CODE13")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
+                    b.Property<int?>("REF_ID_REMPLPAR")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("REF_LABIDMAJ")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("REF_MAJ")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("REF_NOM")
+                        .IsRequired()
+                        .HasMaxLength(41)
+                        .HasColumnType("nvarchar(41)");
+
+                    b.Property<bool?>("REF_SORTIE")
+                        .HasColumnType("bit");
+
+                    b.HasKey("REF_ID");
+
+                    b.ToTable("RefProds");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

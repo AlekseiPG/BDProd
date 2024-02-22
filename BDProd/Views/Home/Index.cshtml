@@ -6,10 +6,10 @@
     <h1 class="display-4">Bonjour</h1>
 </div>
 
-<div style="text-align: center; margin-top: 50px;">
-    <a href="/ImageSelection/Index">
-            <button style="padding: 15px 30px; background-color: #4CAF50; color: white; font-size: 18px; border: none; cursor: pointer;">
-                Gerer les images
-            </button>
-        </a>
-    </div>
+<div class="pseudo_btn_wrap_out">
+    <a asp-controller="ImageSelection" asp-action="Index" class="pseudo_btn_wrap_in">
+        <div class="pseudo_btn">
+            Gerer les images
+        </div>
+    </a>
+</div>

@@ -14,6 +14,19 @@ builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PlainTextPasswordHashe
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAllowSpecificOrigins",
+    builder =>
+    {
+        builder.WithOrigins("https://prodinfo.everys.com/externe/FindProd.ashx")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
+builder.Services.AddDirectoryBrowser();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,5 +55,30 @@ app.MapRazorPages();
 //    FileProvider = new PhysicalFileProvider("C:\\Changes_C\\Projects\\TESTING"),
 //    RequestPath = "/TestingImages"
 //});
+
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "C:\\Changes_C\\Projects\\TESTING")),
+//    RequestPath = "/TESTING2"
+//});
+
+//app.UseFileServer(new FileServerOptions
+//{
+//    FileProvider = new PhysicalFileProvider("C:\\Changes_C\\Projects\\TESTING"),
+//    RequestPath = "/TESTING2",
+//    EnableDirectoryBrowsing = true
+//});
+
+//string customFolderPath = "C:\\Changes_C\\Projects\\TESTING";
+
+//app.UseFileServer(new FileServerOptions
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(customFolderPath)),
+//    RequestPath = "/TESTING2",
+//    EnableDirectoryBrowsing = true
+//});
+
+app.UseCors("MyAllowSpecificOrigins");
 
 app.Run();

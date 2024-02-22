@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@splidejs/splide": "^4.1.4",
     "fancytree": "^0.0.0",
     "jquery.fancytree": "^2.38.3",
     "photoswipe": "^5.4.3"
