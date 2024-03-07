@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BDProd.Data;
 using BDProd.Services;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authorization;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("BDProdContextConnection") ?? throw new InvalidOperationException("Connection string 'BDProdContextConnection' not found.");
 
@@ -27,6 +28,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDirectoryBrowser();
 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,6 +50,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

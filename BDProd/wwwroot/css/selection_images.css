@@ -30,3 +30,7 @@ ul.fancytree-container {
     box-sizing: border-box; 
     text-align: center;
 }
+
+.imageContainer.selected {
+        background-color: lightgray;
+}

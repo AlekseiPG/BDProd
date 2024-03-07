@@ -17,13 +17,9 @@ namespace BDProd.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        //private const string OverPath = "C:\\Changes_C\\Projects\\TESTING";
-
         public IActionResult Index()
         {
-            //var imageFolders = LoadImageFoldersFromServer(OverPath);
             var imageFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TESTING");
-            //var imageFolderPath = "C:\\Changes_C\\Projects\\TESTING";
             Console.WriteLine(imageFolderPath);
             var imageFolders = LoadImageFoldersFromServer(imageFolderPath);
             return View(imageFolders);
@@ -40,14 +36,13 @@ namespace BDProd.Controllers
                 foreach (var subdirectory in subdirectories)
                 {
                     var relativePath = subdirectory.Substring(_webHostEnvironment.WebRootPath.Length).Replace('\\', '/');
-                    //var relativePath = subdirectory.Substring(OverPath.Length).Replace('\\', '/');
                     var folderNode = new FancyTreeNode
                     {
                         title = Path.GetFileName(subdirectory),
                         folder = true,
                         children = new List<FancyTreeNode>(),
-                        path = relativePath, 
-                        key = relativePath 
+                        path = relativePath,
+                        key = relativePath
                     };
 
                     fancyTreeNodes.Add(folderNode);
@@ -55,7 +50,7 @@ namespace BDProd.Controllers
             }
             else
             {
-                fancyTreeNodes.Add(new FancyTreeNode { title = "Dossier introuvable", folder = true , key = "NotFound" });
+                fancyTreeNodes.Add(new FancyTreeNode { title = "Dossier introuvable", folder = true, key = "NotFound" });
             }
 
             return fancyTreeNodes;
@@ -65,7 +60,6 @@ namespace BDProd.Controllers
         public IActionResult GetImages(string folderPath)
         {
             var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, folderPath.TrimStart('/'));
-            //var fullPath = Path.Combine(OverPath, folderPath.TrimStart('/'));
             var images = new List<object>();
 
             if (Directory.Exists(fullPath))
@@ -77,6 +71,52 @@ namespace BDProd.Controllers
                 images.AddRange(imageFiles);
             }
             return Json(images);
+        }
+
+
+        [HttpPost]
+        public IActionResult MoveToTrash(List<string> images, string folderPath)
+        {
+            Console.WriteLine("Mouvement à la poubelle");
+            try
+            {
+                Console.WriteLine(_webHostEnvironment.WebRootPath);
+                Console.WriteLine(folderPath);
+                folderPath = folderPath.Replace('/', '\\');
+                Console.WriteLine(folderPath);
+                string trashFolderPath = _webHostEnvironment.WebRootPath + folderPath;
+                Console.WriteLine(trashFolderPath);
+                trashFolderPath = Path.Combine(trashFolderPath, "Poubelle");
+                Console.WriteLine(trashFolderPath);
+                
+                if (!Directory.Exists(trashFolderPath))
+                {
+                    Directory.CreateDirectory(trashFolderPath);
+                    Console.WriteLine("Poubelle créée avec succès");
+                }
+                else
+                {
+                    Console.WriteLine("Poubelle existe déjà");
+                }
+
+                foreach (var imagePath in images)
+                {
+                    string imageName = Path.GetFileName(imagePath);
+                    Console.WriteLine(imagePath);
+                    string imagePathLocal = _webHostEnvironment.WebRootPath + imagePath;
+                    Console.WriteLine(imagePathLocal);
+                    string destinationPath = Path.Combine(trashFolderPath, imageName);
+                    Console.WriteLine($"Déplacement de {imageName} vers {destinationPath}");
+                    System.IO.File.Move(imagePathLocal, destinationPath);
+                    Console.WriteLine("Succès?");
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Une erreur s'est produite lors du déplacement des images : {ex.Message}");
+            }
         }
 
     }

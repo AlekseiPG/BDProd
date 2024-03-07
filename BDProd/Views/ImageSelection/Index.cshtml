@@ -1,4 +1,15 @@
 ﻿<!-- Views/ImageSelection/Index.cshtml -->
+
+<style>
+    .pseudo_btn_wrap_in {
+        width: 155px;
+    }
+
+    .my_red {
+        background-color: darkred;
+    }
+</style>
+
 @model List<FancyTreeNode>
 
 @section scripts {
@@ -15,7 +26,6 @@
         lightbox.init();
     </script>
     <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css"> *@
-    <link rel="stylesheet" href="~/css/selection_images.css">
     <script>
         $(document).ready(function () {
             $('#fancytree').fancytree({
@@ -36,9 +46,7 @@
                                 var imageElement = $('<div class="imageContainer"></div>');
                                 var img = $('<img src="' + image.path + '" style="max-width: 100%;" />');
                                 var imageName = $('<p>' + getImageName(image.path) + '</p>');
-                                var checkbox = $('<input type="checkbox" name="selectedImages" value="' + image.path + '" />');
                                 imageElement.append(img);
-                                imageElement.append(checkbox);
                                 imageElement.append(imageName);
                                 $('#imageGallery').append(imageElement);
                             });
@@ -49,24 +57,58 @@
                     });
                 }
             });
+
+            $('#moveToTrash').click(function () {
+                var selectedImages = [];
+                $('.imageContainer.selected img').each(function () {
+                    selectedImages.push($(this).attr('src'));
+                });
+                if (selectedImages.length > 0) {
+                    var folderPath = selectedImages[0].substring(0, selectedImages[0].lastIndexOf('/'));
+                    console.log(folderPath);
+                    console.log(selectedImages);
+                    $.ajax({
+                        url: '/ImageSelection/MoveToTrash',
+                        type: 'POST',
+                        data: { images: selectedImages, folderPath: folderPath },
+                        success: function (data) {
+                            alert('Les images ont été déplacées avec succès vers la corbeille.');
+                            $('.imageContainer.selected').remove();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Erreur lors du déplacement des images:', errorThrown);
+                        }
+                    });
+                } else {
+                    alert('Sélectionnez les images à déplacer vers le panier.');
+                }
+            });
+
+            $('#imageGallery').on('dblclick', '.imageContainer', function () {
+                $(this).toggleClass('selected');
+            });
+
             function getImageName(path) {
                 return path.substring(path.lastIndexOf('/') + 1);
             };
+
             $('#treeSearch').on('input', function () {
                 var searchString = $(this).val();
                 var tree = $.ui.fancytree.getTree("#fancytree");;
                 tree.filterNodes(searchString);
             });
+
             $('#submitImages').click(function () {
                 var selectedImages = [];
-                $('input[name="selectedImages"]:checked').each(function () {
-                    selectedImages.push($(this).val());
+                $('.imageContainer.selected img').each(function () {
+                    selectedImages.push($(this).attr('src'));
                 });
                 var selectedImagesJson = JSON.stringify(selectedImages);
                 window.location.href = '/ImageForm/Index?selectedImages=' + encodeURIComponent(selectedImagesJson);
             });
         });
     </script>
+    <link rel="stylesheet" href="~/css/selection_images.css">
 }
 
 <div style="display: flex;">
@@ -77,6 +119,13 @@
             <div id="submitImages" class="pseudo_btn_wrap_in">
                 <div class="pseudo_btn">
                     Continuer
+                </div>
+            </div>
+        </div>
+        <div class="pseudo_btn_wrap_out">
+            <div id="moveToTrash" class="pseudo_btn_wrap_in">
+                <div class="pseudo_btn my_red">
+                    -> Poubelle
                 </div>
             </div>
         </div>
