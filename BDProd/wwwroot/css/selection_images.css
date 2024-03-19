@@ -18,19 +18,65 @@ ul.fancytree-container {
     border-left-width: 10px;
     padding-left: 10vh;
     padding-right: 10vh;
-
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     justify-content: flex-start;
 }
 
 .imageContainer {
-    flex: 0 0 20%; 
+    flex: 0 0 20%;
     padding: 10px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     text-align: center;
+    position: relative;
 }
 
-.imageContainer.selected {
+    .imageContainer.selected {
         background-color: lightgray;
+    }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.modal-content {
+    max-height: 85vh;
+    max-width: 85vw;
+    object-fit: scale-down;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    .modal-content img {
+        display: block;
+    }
+
+.close {
+    color: white;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+    .close:hover, .close:focus {
+        color: #999;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.zoomIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1;
 }

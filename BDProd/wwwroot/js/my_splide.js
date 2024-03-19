@@ -2,7 +2,7 @@
     var main = new Splide('#main-carousel', {
         type: 'fade',
         rewind: true,
-        pagination: false,
+        pagination: true,
         arrows: true,
     });
 

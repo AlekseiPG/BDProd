@@ -16,16 +16,6 @@
     <link rel="stylesheet" href="~/lib/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css">
     <script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"></script>
     <script src="~/lib/jquery.fancytree/dist/modules/jquery.fancytree.filter.js"></script>
-        @*     <script type="module">
-        import PhotoSwipeLightbox from '/lib/photoswipe/dist/photoswipe-lightbox.esm.js';
-        const lightbox = new PhotoSwipeLightbox({
-            gallery: '#my-gallery',
-            children: 'a',
-            pswpModule: () => import('/lib/photoswipe/dist/photoswipe.esm.js')
-        });
-        lightbox.init();
-    </script>
-    <link rel="stylesheet" href="~/lib/photoswipe/dist/photoswipe.css"> *@
     <script>
         $(document).ready(function () {
             $('#fancytree').fancytree({
@@ -46,7 +36,9 @@
                                 var imageElement = $('<div class="imageContainer"></div>');
                                 var img = $('<img src="' + image.path + '" style="max-width: 100%;" />');
                                 var imageName = $('<p>' + getImageName(image.path) + '</p>');
+                                var zoomIcon = $('<div class="zoomIcon">&#128269;</div>');
                                 imageElement.append(img);
+                                imageElement.append(zoomIcon);
                                 imageElement.append(imageName);
                                 $('#imageGallery').append(imageElement);
                             });
@@ -106,6 +98,33 @@
                 var selectedImagesJson = JSON.stringify(selectedImages);
                 window.location.href = '/ImageForm/Index?selectedImages=' + encodeURIComponent(selectedImagesJson);
             });
+
+            $(document).ready(function () {
+                var modal = $("#imageModal");
+                var modalImg = $("#modalImage");
+                var span = $(".close");
+
+                function displayModal(imageSrc) {
+                    modalImg.attr("src", imageSrc);
+                    modal.css("display", "block");
+                }
+
+                span.on("click", function () {
+                    modal.css("display", "none");
+                });
+
+                $(window).on("click", function (event) {
+                    if (event.target == modal[0]) {
+                        modal.css("display", "none");
+                    }
+                });
+
+                $('#imageGallery').on('click', '.zoomIcon', function (event) {
+                    var imageUrl = $(this).siblings('img').attr('src');
+                    displayModal(imageUrl);
+                    event.stopPropagation();
+                });
+            });
         });
     </script>
     <link rel="stylesheet" href="~/css/selection_images.css">
@@ -131,4 +150,10 @@
         </div>
     </div>
     <div id="imageGallery" style="flex: 4;"></div>
+</div>
+
+
+<div id="imageModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
 </div>

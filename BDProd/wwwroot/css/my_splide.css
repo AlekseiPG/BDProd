@@ -66,6 +66,11 @@ input {
     margin: 5px;
 }
 
+.label-fixed {
+    width: 5vw;
+    display: inline-block;
+}
+
 #autocomplete-res-prod, #autocomplete-res-lab {
     position: absolute;
     background-color: #fff;

@@ -10,15 +10,16 @@
     @* <script src="~/js/my_search_web_prod.js"></script> *@
     <script src="~/js/my_search_lab.js"></script>
     <script src="~/js/my_search_prod.js"></script>
+    <script src="~/js/labselinput.js"></script>
 }
 
 <div class="my_block my_flex">
     <div>
-        <label for="labSearch">Laboratoire:</label>
+        <label for="labSearch" class="label-fixed">Laboratoire:</label>
         <input type="text" id="autocomplete-lab" name="labSearch">
         <div id="autocomplete-res-lab"></div>
         <br>
-        <label for="productSearch">Code/Nom/Lpp:</label>
+        <label for="productSearch" class="label-fixed">Code/Nom/Lpp:</label>
         <input type="text" id="autocomplete-prod" name="productSearch">
         <div id="autocomplete-res-prod"></div>
         <span id="res-prod-count">x </span><label for="productSearch"> produits trouvés</label>
