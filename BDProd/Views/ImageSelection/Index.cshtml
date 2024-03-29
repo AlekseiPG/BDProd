@@ -95,8 +95,9 @@
                 $('.imageContainer.selected img').each(function () {
                     selectedImages.push($(this).attr('src'));
                 });
-                var selectedImagesJson = JSON.stringify(selectedImages);
-                window.location.href = '/ImageForm/Index?selectedImages=' + encodeURIComponent(selectedImagesJson);
+                var carouselImagesArray = JSON.stringify(selectedImages);
+                localStorage.setItem('carouselImagesArray', carouselImagesArray);
+                window.location.href = '/ImageForm';
             });
 
             $(document).ready(function () {

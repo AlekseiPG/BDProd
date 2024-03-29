@@ -6,10 +6,9 @@ namespace BDProd.Controllers
     public class ImageForm : Controller
     {
 
-        public IActionResult Index(string selectedImages)
+        public IActionResult Index()
         {
-            string[] images = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(selectedImages);
-            return View(images);
+            return View();
         }
 
         private readonly BDProdContext _context;
@@ -29,10 +28,15 @@ namespace BDProd.Controllers
             return Json(labs);
         }
 
-        public IActionResult ProdSearch(string term)
+        public IActionResult ProdSearch(string term, string labSearchTerm)
         {
+            int? labId = _context.RefLabos
+                .Where(l => l.RLAB_NOM == labSearchTerm)
+                .Select(l => l.RLAB_ID)
+                .FirstOrDefault();
+
             var prods = _context.RefProds
-                .Where(p => p.REF_CODE13.Contains(term) || p.REF_NOM.Contains(term))
+                .Where(p => (p.REF_CODE13.Contains(term) || p.REF_NOM.Contains(term)) && (labId == null || p.REF_LABIDMAJ == labId))
                 .Select(p => new { nomLong = p.REF_NOM, code13 = p.REF_CODE13 })
                 .ToList();
 
