@@ -1,12 +1,11 @@
 ﻿<!-- Views/ImageForm/Index.cshtml -->
-
 @section scripts {
     <script src="~/lib/splide/dist/js/splide.min.js"></script>
     <link rel="stylesheet" href="~/lib/splide/dist/css/splide.min.css">
     <link rel="stylesheet" href="~/lib/splide/dist/css/themes/splide-sea-green.min.css">
     <link rel="stylesheet" href="~/css/my_splide.css">
     <script src="~/js/my_splide.js" defer></script>
-    @* <script src="~/js/my_search_web_prod.js"></script> *@
+                @* <script src="~/js/my_search_web_prod.js"></script> *@
     <script src="~/js/my_search_lab.js"></script>
     <script src="~/js/my_search_prod.js"></script>
     <script src="~/js/labselinput.js"></script>
@@ -22,8 +21,14 @@
         <input type="text" id="autocomplete-prod" name="productSearch">
         <div id="autocomplete-res-prod"></div>
         <span id="res-prod-count">x </span><label for="productSearch"> produits trouvés</label>
-        <button id="searchButton">Recherche</button>
+        <button id="searchButton">Recherche</button>  
     </div>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
 </div>
 
 <div class="my_block my_flex">
@@ -40,8 +45,6 @@
                     Enregistrer
                 </div>
             </div>
-        </div>
-        <div class="pseudo_btn_wrap_out">
             <div class="pseudo_btn_wrap_in">
                 <div class="pseudo_btn">
                     Annuler
@@ -82,22 +85,22 @@
                     Nouveau
                 </div>
             </div>
-        </div>
-        <div class="pseudo_btn_wrap_out" id="supprimer">
-            <div class="pseudo_btn_wrap_in">
+            <br />
+            <br />
+            <div class="pseudo_btn_wrap_in" id="supprimer">
                 <div class="pseudo_btn">
                     Supprimer
                 </div>
             </div>
-        </div>
-        <div class="pseudo_btn_wrap_out">
-            <div class="pseudo_btn_wrap_in">
+            <br />
+            <br />
+            <a asp-controller="ImageSelection" asp-action="ImagesAdding" class="pseudo_btn_wrap_in">
                 <div class="pseudo_btn">
                     Ajouter
                 </div>
-            </div>
-        </div>
-        <div class="pseudo_btn_wrap_out">
+            </a>
+            <br />
+            <br />
             <div class="pseudo_btn_wrap_in">
                 <div class="pseudo_btn my_red">
                     Pubelle
@@ -105,4 +108,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="imageModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
 </div>

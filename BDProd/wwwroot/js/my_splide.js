@@ -9,10 +9,22 @@
         var img = document.createElement('img');
         img.src = image;
         img.alt = 'Image';
+
+        var imageName = document.createElement('div');
+        var text = document.createTextNode(image.substring(image.lastIndexOf('/') + 1));
+        imageName.appendChild(text);
+
+        var zoomIcon = document.createElement('img');
+        zoomIcon.classList.add('zoomIcon');
+        zoomIcon.src = "images/glass.svg";
+
         li.appendChild(img);
 
         var liCopy = li.cloneNode(true);
         liCopy.appendChild(img.cloneNode(true));
+
+        li.append(zoomIcon);
+        li.append(imageName);
 
         carousel.appendChild(li);
         thumbCarousel.appendChild(liCopy);
@@ -25,11 +37,11 @@ var thumbnails;
 function initializeSplideCarousels() {
 
     if (main) {
-        main.destroy(); 
+        main.destroy();
     }
 
     if (thumbnails) {
-        thumbnails.destroy(); 
+        thumbnails.destroy();
     }
 
     main = new Splide('#main-carousel', {
@@ -100,12 +112,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var supprimerBtn = this;
 
         var confirmBtn = document.createElement('div');
-        confirmBtn.classList.add('pseudo_btn_wrap_out');
-        confirmBtn.innerHTML = '<div class="pseudo_btn_wrap_in"><div class="pseudo_btn my_red">Oui</div></div>';
+        confirmBtn.classList.add('pseudo_btn_wrap_in');
+        confirmBtn.style.marginRight = '10px';
+        confirmBtn.innerHTML = '<div class="pseudo_btn my_red">Oui</div>';
 
         var cancelBtn = document.createElement('div');
-        cancelBtn.classList.add('pseudo_btn_wrap_out');
-        cancelBtn.innerHTML = '<div class="pseudo_btn_wrap_in"><div class="pseudo_btn">No</div></div>';
+        cancelBtn.classList.add('pseudo_btn_wrap_in');
+        cancelBtn.innerHTML = '<div class="pseudo_btn">No</div>';
 
         confirmBtn.style.display = 'inline-block';
         cancelBtn.style.display = 'inline-block';
@@ -140,4 +153,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+});
+
+$(function () {
+    var modal = $("#imageModal");
+    var modalImg = $("#modalImage");
+    var span = $(".close");
+
+    function displayModal(imageSrc) {
+        modalImg.attr("src", imageSrc);
+        modal.css("display", "block");
+        console.log("display");
+    }
+
+    span.on("click", function () {
+        modal.css("display", "none");
+    });
+
+    $(window).on("click", function (event) {
+        if (event.target == modal[0]) {
+            modal.css("display", "none");
+        }
+    });
+
+    $('#main-carousel').on('click', '.zoomIcon', function (event) {
+        console.log("zOOOM");
+        var imageUrl = $(this).closest('li').find('img').attr('src');
+        console.log(imageUrl);
+        displayModal(imageUrl);
+        event.stopPropagation();
+    });
 });

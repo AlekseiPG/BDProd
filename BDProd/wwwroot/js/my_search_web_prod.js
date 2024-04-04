@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     $('#autocomplete-prod').on('input', function () {
         var searchText = $(this).val();
         $.ajax({

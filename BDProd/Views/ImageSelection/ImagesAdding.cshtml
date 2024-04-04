@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/lib/jquery.fancytree/dist/skin-lion/ui.fancytree.min.css">
     <script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"></script>
     <script src="~/lib/jquery.fancytree/dist/modules/jquery.fancytree.filter.js"></script>
-    <script src="~/js/image_selection.js"></script>
+    <script src="~/js/image_selection_adding.js"></script>
     <script>
         var modelData = @Html.Raw(Json.Serialize(Model));
         BdProdJs.images_selection(modelData);
@@ -29,7 +29,7 @@
         <input type="text" id="treeSearch" placeholder="Recherche...">
         <div id="fancytree"></div>
         <div class="pseudo_btn_wrap_out">
-            <div id="submitImages" class="pseudo_btn_wrap_in">
+            <div id="addImages" class="pseudo_btn_wrap_in">
                 <div class="pseudo_btn">
                     Continuer
                 </div>

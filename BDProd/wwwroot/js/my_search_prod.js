@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     $('#searchButton').on('click', function () {
         var searchText = $('#autocomplete-prod').val();
         var labSearchText = $('#autocomplete-lab').val();

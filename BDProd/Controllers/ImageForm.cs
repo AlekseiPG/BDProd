@@ -20,27 +20,43 @@ namespace BDProd.Controllers
 
         public IActionResult LabSearch(string term)
         {
-            var labs = _context.RefLabos
+            try
+            {
+                var labs = _context.RefLabos
                 .Where(l => l.RLAB_NOM.Contains(term))
                 .Select(l => new { label = l.RLAB_NOM, value = l.RLAB_ID })
                 .ToList();
 
-            return Json(labs);
+                return Json(labs);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Erreur: " + ex.Message;
+                return Json(new { error = ViewBag.ErrorMessage });
+            }
         }
 
         public IActionResult ProdSearch(string term, string labSearchTerm)
         {
-            int? labId = _context.RefLabos
+            try
+            {
+                int? labId = _context.RefLabos
                 .Where(l => l.RLAB_NOM == labSearchTerm)
                 .Select(l => l.RLAB_ID)
                 .FirstOrDefault();
 
-            var prods = _context.RefProds
-                .Where(p => (p.REF_CODE13.Contains(term) || p.REF_NOM.Contains(term)) && (labId == null || p.REF_LABIDMAJ == labId))
-                .Select(p => new { nomLong = p.REF_NOM, code13 = p.REF_CODE13 })
-                .ToList();
+                var prods = _context.RefProds
+                    .Where(p => (p.REF_CODE13.Contains(term) || p.REF_NOM.Contains(term)) && (labId == null || p.REF_LABIDMAJ == labId))
+                    .Select(p => new { nomLong = p.REF_NOM, code13 = p.REF_CODE13 })
+                    .ToList();
 
-            return Json(prods);
+                return Json(prods);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Erreur: " + ex.Message;
+                return Json(new { error = ViewBag.ErrorMessage });
+            }
         }
 
     }

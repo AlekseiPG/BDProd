@@ -1,7 +1,7 @@
-﻿$(document).ready(function () {
-    var selectedImagesUrlParam = new URLSearchParams(window.location.search).get('selectedImages');
+﻿$(function () {
+    var selectedImagesUrlParam = localStorage.getItem('carouselImagesArray');
     if (selectedImagesUrlParam) {
-        var selectedImages = JSON.parse(decodeURIComponent(selectedImagesUrlParam));
+        var selectedImages = JSON.parse(selectedImagesUrlParam);
         if (selectedImages.length > 0) {
             var firstImagePath = selectedImages[0];
             var folderPath = firstImagePath.substring(0, firstImagePath.lastIndexOf('/'));

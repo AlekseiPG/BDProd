@@ -25,6 +25,14 @@ namespace BDProd.Controllers
             return View(imageFolders);
         }
 
+        public IActionResult ImagesAdding()
+        {
+            var imageFolderPath = Path.Combine(_webHostEnvironment.WebRootPath, "TESTING");
+            Console.WriteLine(imageFolderPath);
+            var imageFolders = LoadImageFoldersFromServer(imageFolderPath);
+            return View(imageFolders);
+        }
+
         private List<FancyTreeNode> LoadImageFoldersFromServer(string folderPath)
         {
             var fancyTreeNodes = new List<FancyTreeNode>();
@@ -88,7 +96,7 @@ namespace BDProd.Controllers
                 Console.WriteLine(trashFolderPath);
                 trashFolderPath = Path.Combine(trashFolderPath, "Poubelle");
                 Console.WriteLine(trashFolderPath);
-                
+
                 if (!Directory.Exists(trashFolderPath))
                 {
                     Directory.CreateDirectory(trashFolderPath);

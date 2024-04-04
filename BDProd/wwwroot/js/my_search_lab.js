@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(function () {
     $('#autocomplete-lab').on('input', function () {
         var searchText = $(this).val();
 
