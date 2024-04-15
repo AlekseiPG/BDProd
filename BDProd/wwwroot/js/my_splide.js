@@ -69,6 +69,13 @@ function initializeSplideCarousels() {
     main.sync(thumbnails);
     main.mount();
     thumbnails.mount();
+
+    var currentIndex = main.index + 1;
+    document.getElementById('tri-input').value = currentIndex;
+    main.on('moved', function () {
+        currentIndex = main.index + 1;
+        document.getElementById('tri-input').value = currentIndex;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -102,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             initializeSplideCarousels();
 
             main.go(newIndex);
+
         } else {
             alert('Entrée de tri invalide!');
         }
@@ -139,6 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
             populateCarousel(carouselImagesArray, carouselImages, carouselImagesThumb);
 
             initializeSplideCarousels();
+
+            main.go(currentIndex);
 
             supprimerBtn.style.display = 'block';
             cancelBtn1.remove();
@@ -191,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         localStorage.setItem('carouselImagesArray', carouselImagesArraySetTri);
                         populateCarousel(carouselImagesArray, carouselImages, carouselImagesThumb);
                         initializeSplideCarousels();
+                        main.go(currentIndex);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.error('Erreur lors du déplacement des images:', errorThrown);
@@ -209,6 +220,39 @@ document.addEventListener('DOMContentLoaded', function () {
             this.remove();
         });
 
+    });
+
+    document.getElementById("customUploadButton").addEventListener("click", function () {
+        document.getElementById("dropzoneContainer").style.display = "block";
+    });
+
+    //in development
+    var myDropzone = new Dropzone("#customDropzone", {
+        url: "/ImageForm/OnPostUploadAsync",
+        paramName: "file",
+        acceptedFiles: ".jpg,.jpeg,.png",
+        init: function () {
+            console.log("Dropzone initialized successfully");
+            this.on("addedfile", function (file) {
+                console.log("File " + file.name + " added");
+            });
+            this.on("success", function (file, response) {
+                console.log("File " + file.name + " uploaded successfully");
+            });
+
+            this.on("error", function (file, errorMessage) {
+                console.error("Error uploading file " + file.name + ": " + errorMessage);
+            });
+
+            this.on("sending", function (file, xhr, formData) {
+                var folderPath = $('#autocomplete-lab').val();
+                formData.append("folderPath", folderPath);
+            });
+        }
+    });
+
+    document.getElementById("closeDropzoneButton").addEventListener("click", function () {
+        document.getElementById("dropzoneContainer").style.display = "none";
     });
 
     $(function () {
@@ -241,4 +285,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-

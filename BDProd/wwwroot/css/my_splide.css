@@ -130,3 +130,25 @@ input {
     cursor: pointer;
     z-index: 1;
 }
+
+#dropzoneContainer {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#customDropzone {
+    text-align: center;
+    width: 50vw;
+    height: 50vh;
+}
+
+#closeDropzoneButton {
+    margin-top: 10px;
+}

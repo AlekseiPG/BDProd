@@ -3,9 +3,11 @@
     <script src="~/lib/splide/dist/js/splide.min.js"></script>
     <link rel="stylesheet" href="~/lib/splide/dist/css/splide.min.css">
     <link rel="stylesheet" href="~/lib/splide/dist/css/themes/splide-sea-green.min.css">
+    <link rel="stylesheet" href="~/lib/dropzone.min.css">
     <link rel="stylesheet" href="~/css/my_splide.css">
+    <script src="~/lib/dropzone.min.js"></script>
     <script src="~/js/my_splide.js" defer></script>
-                @* <script src="~/js/my_search_web_prod.js"></script> *@
+                    @* <script src="~/js/my_search_web_prod.js"></script> *@
     <script src="~/js/my_search_lab.js"></script>
     <script src="~/js/my_search_prod.js"></script>
     <script src="~/js/labselinput.js"></script>
@@ -21,7 +23,7 @@
         <input type="text" id="autocomplete-prod" name="productSearch">
         <div id="autocomplete-res-prod"></div>
         <span id="res-prod-count">x </span><label for="productSearch"> produits trouvés</label>
-        <button id="searchButton">Recherche</button>  
+        <button id="searchButton">Recherche</button>
     </div>
     @if (ViewBag.ErrorMessage != null)
     {
@@ -80,10 +82,15 @@
         <input type="number" id="tri-input" placeholder="Faire le tri">
         <button id="tri-button">Tri</button>
         <div class="pseudo_btn_wrap_out">
-            <div class="pseudo_btn_wrap_in">
+            <div class="pseudo_btn_wrap_in" id="customUploadButton">
                 <div class="pseudo_btn">
                     Nouveau
                 </div>
+            </div>
+            <div id="dropzoneContainer">
+                <div class="dz-message">Faites glisser les fichiers ici ou cliquez pour sélectionner:</div>
+                <div id="customDropzone"></div>
+                <button id="closeDropzoneButton">Fermer</button>
             </div>
             <br />
             <br />
@@ -109,7 +116,6 @@
         </div>
     </div>
 </div>
-
 <div id="imageModal" class="modal">
     <span class="close">&times;</span>
     <img class="modal-content" id="modalImage">

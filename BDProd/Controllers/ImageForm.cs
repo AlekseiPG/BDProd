@@ -6,16 +6,18 @@ namespace BDProd.Controllers
     public class ImageForm : Controller
     {
 
+        private readonly BDProdContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ImageForm(BDProdContext context, IWebHostEnvironment webHostEnvironment)
+        {
+            _context = context;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
         public IActionResult Index()
         {
             return View();
-        }
-
-        private readonly BDProdContext _context;
-
-        public ImageForm(BDProdContext context)
-        {
-            _context = context;
         }
 
         public IActionResult LabSearch(string term)
@@ -59,6 +61,35 @@ namespace BDProd.Controllers
             }
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file, string folderPath)
+        {
+            folderPath = Path.Combine("TESTING", folderPath);
+            folderPath = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+            try
+            {
+                if (!Directory.Exists(folderPath))
+                {
+                    throw new Exception("The laboratory folder does not exist");
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                Console.WriteLine(uniqueFileName);
+                var filePath = Path.Combine(folderPath, uniqueFileName);
+                Console.WriteLine(filePath);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok(new { filePath });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error while uploading file: " + ex.Message);
+            }
+        }
     }
 
 }
